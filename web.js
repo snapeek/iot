@@ -84,7 +84,7 @@ const uri = 'http://localhost:' + port
 
 mongoose.Promise = global.Promise
 
-module.exports = app.listen(port, err => {
+module.exports = app.listen(port, '0.0.0.0', err => {
   if (err) {
     console.log(err)
     return
