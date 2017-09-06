@@ -1,16 +1,13 @@
 'use strict'
 
-require('./check-versions')()
+require('./build/check-versions')()
 
 const path = require('path')
 const express = require('express')
 const webpack = require('webpack')
 const opn = require('opn')
-const config = require('../config')
-const proxyMiddleware = require('http-proxy-middleware')
-const webpackConfig = process.env.NODE_ENV === 'testing'
-  ? require('./webpack.prod.conf')
-  : require('./webpack.dev.conf')
+const config = require('./config')
+
 const mongoose = require('mongoose')
 const bodyParser = require("body-parser")
 // default port where dev server listens for incoming traffic
@@ -20,15 +17,21 @@ const autoOpenBrowser = Boolean(config.dev.autoOpenBrowser)
 // Define HTTP proxies to your custom API backend
 // https://github.com/chimurai/http-proxy-middleware
 const proxyTable = config.dev.proxyTable
-
+const ejs = require('ejs')
 const app = express()
-const compiler = webpack(webpackConfig)
 
-const Port = require("../client/models/port")
-const Device = require("../client/models/device")
+const Port = require("./client/models/port")
+const Device = require("./client/models/device")
+app.engine('html', ejs.renderFile)
+app.set("view engine", "html")
+app.set('views', __dirname + '/dist')
+app.use(bodyParser.json())
+
+app.get("/", function(req, res) {
+  res.render("index", {});
+})
 
 // app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
 app.get('/ports/:port_id', function (req, res) {
   console.log(req.params)
   Port.findOne({port_id: req.params.port_id}, function(err, port) {
@@ -69,55 +72,17 @@ app.get('/devices', function (req, res) {
   })
 })
 
-const devMiddleware = require('webpack-dev-middleware')(compiler, {
-  publicPath: webpackConfig.output.publicPath,
-  stats: {
-    colors: true,
-    chunks: false
-  }
-})
-
-const hotMiddleware = require('webpack-hot-middleware')(compiler)
-// force page reload when html-webpack-plugin template changes
-compiler.plugin('compilation', compilation => {
-  compilation.plugin('html-webpack-plugin-after-emit', (data, cb) => {
-    hotMiddleware.publish({ action: 'reload' })
-    cb()
-  })
-})
-
-// // proxy api requests
-// Object.keys(proxyTable).forEach(context => {
-//   let options = proxyTable[context]
-//   if (typeof options === 'string') {
-//     options = { target: options }
-//   }
-//   app.use(proxyMiddleware(options.filter || context, options))
-// })
-
-// handle fallback for HTML5 history API
-app.use(require('connect-history-api-fallback')())
-
-// serve webpack bundle output
-app.use(devMiddleware)
-
 // enable hot-reload and state-preserving
 // compilation error display
 // app.use(hotMiddleware)
 
 // serve pure static assets
 const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
-app.use(staticPath, express.static('./assets'))
+app.use(staticPath, express.static('./dist/assets'))
 
 const uri = 'http://localhost:' + port
 
-devMiddleware.waitUntilValid(() => {
-  console.log('> Listening at ' + uri + '\n')
-})
-
 mongoose.Promise = global.Promise
-
-
 
 module.exports = app.listen(port, err => {
   if (err) {
