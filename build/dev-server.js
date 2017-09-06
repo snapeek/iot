@@ -99,7 +99,7 @@ compiler.plugin('compilation', compilation => {
 app.use(require('connect-history-api-fallback')())
 
 // serve webpack bundle output
-// app.use(devMiddleware)
+app.use(devMiddleware)
 
 // enable hot-reload and state-preserving
 // compilation error display
