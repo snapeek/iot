@@ -99,11 +99,11 @@ compiler.plugin('compilation', compilation => {
 app.use(require('connect-history-api-fallback')())
 
 // serve webpack bundle output
-app.use(devMiddleware)
+// app.use(devMiddleware)
 
 // enable hot-reload and state-preserving
 // compilation error display
-app.use(hotMiddleware)
+// app.use(hotMiddleware)
 
 // serve pure static assets
 const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
