@@ -13,14 +13,14 @@
                   <span>全部</span>
                 </a>
               </p>
-              <!-- <p class="control">
+               <p class="control">
                 <a v-bind:class="['button', activeTab(2)]" @click="changePage(2)">
                   <span class="icon is-small">
                     <i class="fa fa-flash"></i>
                   </span>
                   <span>功率计</span>
                 </a>
-              </p> -->
+              </p> 
               <p class="control">
                 <a v-bind:class="['button', activeTab(0)]" @click="changePage(0)">
                   <span class="icon is-small">
@@ -111,15 +111,7 @@
                   <input class="input" type="text" placeholder="如：功率计-1" v-model="currentDevice.name">
                 </p>
               </div>
-            </div>
-            <div class="control is-horizontal">
-              <div class="control-label">
-                <label class="label">设备 ID</label>
-              </div>
-              <div class="control">
-                <input class="input is-expanded" type="text" placeholder="" >
-              </div>
-            </div>            
+            </div>          
             <div class="control is-horizontal">
               <div class="control-label">
                 <label class="label">设备类型</label>
@@ -131,7 +123,7 @@
                     v-on:input="oninput('type', $event.target.value)" >
                     <option value="1">输入</option>
                     <option value="2">输出</option>
-                    <!-- <option value="3">功率计</option> -->
+                     <option value="3">功率计</option> 
                   </select>
                 </div>
               </div>

@@ -27,7 +27,36 @@
                 <i class="fa fa-check"></i>
               </span> -->
               <!-- <span class="help is-success">This username is available</span> -->
-            </p>   
+            </p>
+            <label class="label">校正状态</label>
+            <p class="control has-icon has-icon-right">
+              <span class="select">
+                <select v-model="rate">
+                  <option :value="1">缺省校正</option>
+                  <option :value="2">自适应校正</option>
+                </select>
+              </span>  
+            </p>
+            <label class="label">系统状态</label>
+            <p class="control has-icon has-icon-right">
+              <span class="select">
+                <select v-model="rate">
+                  <option :value="0">启动中</option>
+                  <option :value="1">暂停</option>
+                </select>
+              </span>  
+            </p>
+            <label class="label">读取间隔</label>
+            <p class="control has-addons">
+              <span class="select">
+                <select v-model="rate">
+                  <option :value="30">30 秒</option>
+                  <option :value="60">60 秒</option>
+                  <option :value="90">90 秒</option>
+                </select>
+              </span>
+              <input class="input is-expanded" type="text" placeholder="自定义" v-model="rate">
+            </p>            
             <p class="control">
               <button class="button is-primary" @click="submit">保存</button>
               <button class="button is-link">取消</button>

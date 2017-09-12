@@ -42,7 +42,7 @@ export default {
 
   data () {
     return {
-      ports: [],
+      ports: [1],
       options: {}
     }
   },

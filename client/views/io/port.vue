@@ -1,6 +1,7 @@
 <template>
   <div class="tile is-parent">
      <article class="tile is-child box">
+      <h2 class="title">{{name}}</h2>
       <label class="label">设备选择</label>
       <p class="control">
         <span class="select">
@@ -10,7 +11,7 @@
           </select>
         </span>
       </p>
-      <label class="label">读取间隔</label>
+      <!-- <label class="label">读取间隔</label>
       <p class="control has-addons">
         <span class="select">
           <select v-model="rate">
@@ -20,6 +21,19 @@
           </select>
         </span>
         <input class="input is-expanded" type="text" placeholder="自定义" v-model="rate">
+      </p> -->
+      <label class="label" v-if="type == 1">端口输出值</label>
+      <p class="control has-addons" v-if="type == 1">
+        <span class="select">
+          <select v-model="out_type">
+            <option value="0">输入端口一</option>
+            <option value="1">输入端口一</option>
+            <option value="1">输入端口一</option>
+            <option value="0">缺省校正</option>
+            <option value="-1">自适应校正</option>
+          </select>
+        </span>
+        <input class="input is-expanded" type="text" placeholder="请输入公式" v-model="computer" v-if="out_type == 1">
       </p>
       <label class="label">转换设置</label>
       <p class="control has-addons">
@@ -55,7 +69,9 @@ export default {
       type: Array,
       default() { return [] }
     },
-    pid: String
+    name: String,
+    pid: String,
+    type: Number
   },
   data () {
     //  let devices = await Device.find({})

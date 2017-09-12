@@ -11,7 +11,7 @@
             <label class="label">协议类型</label>
             <p class="control">
               <div class="select is-fullwidth">
-                <select>
+                <select v-model="type">
                   <option value="tcp">modbusTCP</option>
                   <option value="rtu">modbusRTU</option>
                 </select>
@@ -19,45 +19,110 @@
             </p>
             <p class="control"></p>
             <label class="label">连接设置</label>
-            <p class="control is-horizontal">
-              <div class="control is-grouped">
+            <p class="control is-horizontal" v-if="type == 'tcp'">
+              <div class="control is-grouped" v-if="type == 'tcp'">
                 <p class="control is-expanded">
-                  <input class="input" type="text" placeholder="IP">
+                  <input class="input" type="text" placeholder="IP"/>
                 </p>
                 <p class="control is-expanded">
-                  <input class="input" type="text" placeholder="端口号">
+                  <input class="input" type="text" placeholder="端口号"/>
                 </p>
               </div>
             </p>
-            <p class="control is-horizontal">
-              <div class="control is-grouped">
+            <p class="control is-horizontal" v-show="type == 'rtu'">
+              <div class="control is-grouped" v-show="type == 'rtu'">
                 <p class="control is-expanded">
-                  <input class="input" type="text" placeholder="波特率" >
+                  <input class="input" type="text" placeholder="串口号" >
                 </p>
                 <p class="control is-expanded">
-                  <input class="input" type="text" placeholder="校验位">
+                  <input class="input" type="text" placeholder="设备 ID">
                 </p>
               </div>
             </p> 
-            <p class="control is-horizontal">
-              <div class="control is-grouped">
+            
+            <p class="control" v-show="type == 'rtu'">
+              <div class="control is-grouped" v-show="type == 'rtu'">
                 <p class="control is-expanded">
-                  <input class="input" type="text" placeholder="数据位">
+                <label class="label"  v-show="type == 'rtu'">波特率</label>
+                <span class="select">
+                  <select>
+                    <option value="115200">115200</option>
+                    <option value="57600">57600</option>
+                    <option value="38400">38400</option>
+                    <option value="19200">19200</option>
+                    <option value="14400">14400</option>
+                    <option value="9600">9600</option>
+                    <option value="4800">4800</option>
+                    <option value="2400">2400</option>
+                  </select>
+                </span>
                 </p>
                 <p class="control is-expanded">
-                  <input class="input" type="text" placeholder="校验位">
+                <label class="label"  v-show="type == 'rtu'">数据位</label>
+                <span class="select">
+                  <select>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                  </select>
+                </span>
                 </p>
               </div>
             </p>
-            <label class="label">计算公式</label>
-            <p class="control has-icon has-icon-right">
-              <textarea class="textarea" placeholder="例如: $input * 10"></textarea>
-
-              <!-- <span class="icon is-small">
-                 <i class="fa fa-check"></i> 
-              </span> -->
-              <!-- <span class="help is-success">This username is available</span> -->
+            <p class="control" v-show="type == 'rtu'">
+              <div class="control is-grouped" v-show="type == 'rtu'">
+                <p class="control is-expanded">
+                <label class="label"  v-show="type == 'rtu'">奇偶校验</label>
+                <span class="select">
+                  <select>
+                    <option value="115200">115200</option>
+                    <option value="57600">57600</option>
+                    <option value="38400">38400</option>
+                    <option value="19200">19200</option>
+                    <option value="14400">14400</option>
+                    <option value="9600">9600</option>
+                    <option value="4800">4800</option>
+                    <option value="2400">2400</option>
+                  </select>
+                </span>
+                </p>
+                <p class="control is-expanded">
+                <label class="label"  v-show="type == 'rtu'">停止位</label>
+                <span class="select">
+                  <select>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                  </select>
+                </span>
+                </p>
+              </div>
             </p>
+            <label class="label">寄存器地址</label>
+            <p class="control">
+              <p class="control is-expanded">
+                <input class="input" type="text" placeholder="寄存器地址">
+              </p>
+            </p>
+            <label class="label">数据类型</label>
+            <span class="select is-fullwidth">
+                <select v-model="out_type">
+                  <option value="0">long</option>
+                  <option value="1">float</option>
+                </select>
+              </span>
+            <label class="label">转换设置</label>
+            <p class="control has-addons">
+              <span class="select is-fullwidth">
+                <select v-model="out_type">
+                  <option value="0">使用设备公式</option>
+                  <option value="1">自定义公式</option>
+                </select>
+              </span>
+              <input class="input is-expanded" type="text" placeholder="请输入公式" v-model="computer" v-if="out_type == 1">
+            </p>            
             <p class="control">
               <button class="button is-primary" @click="submit">保存</button>
               <button class="button is-link">取消</button>
@@ -100,7 +165,9 @@ export default {
     return {
       mongoUrl: '',
       mask: '',
-      host: ''
+      host: '',
+      out_type: '',
+      type: 'tcp'
     }
   },
 

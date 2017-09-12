@@ -2,19 +2,19 @@
   <div>
      <div class="tile is-ancestor">
       <div class="tile is-parent is-6">
-        <port :devices='devicesIn' pid="port_0"></port>
+        <port :devices='devicesIn' pid="port_0" name="端口一"></port>
       </div>
       <div class="tile is-parent is-6">
-        <port :devices='devicesIn' pid="port_1"></port>
+        <port :devices='devicesIn' pid="port_1" name="端口二"></port>
       </div>
     </div>
 
     <div class="tile is-ancestor">
       <div class="tile is-parent is-6">
-        <port :devices='devicesIn' pid="port_2"></port>
+        <port :devices='devicesIn' pid="port_2" name="端口三"></port>
       </div>
       <div class="tile is-parent is-6">
-        <port :devices='devicesIn' pid="port_3"></port>
+        <port :devices='devicesIn' pid="port_3" name="端口四"></port>
       </div>
     </div>       
     </div>

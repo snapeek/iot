@@ -48,21 +48,23 @@
           <table class="table is-striped">
             <thead>
               <tr>
-                <th>记录时间</th>
-                <th>端口 1</th>
-                <th>端口 2</th>
-                <th>端口 3</th>
-                <th>端口 4</th>
+                <th>记录开始时间</th>
+                <th>记录停止时间</th>
+                <th>输入端口 1</th>
+                <th>功率计</th>
+                <th>输出端口 1</th>
+                <th>输出端口 3</th>
                 <th colspan="3"></th>
               </tr>
             </thead>
             <tfoot>
               <tr>
-                <th>记录时间</th>
-                <th>端口 1</th>
-                <th>端口 2</th>
-                <th>端口 3</th>
-                <th>端口 4</th>
+                <th>记录开始时间</th>
+                <th>记录停止时间</th>
+                <th>输入端口 1</th>
+                <th>功率计</th>
+                <th>输出端口 1</th>
+                <th>输出端口 3</th>
                 <th colspan="3"></th>
               </tr>
             </tfoot>
