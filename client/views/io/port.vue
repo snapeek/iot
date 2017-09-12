@@ -27,8 +27,8 @@
         <span class="select">
           <select v-model="out_type">
             <option value="0">输入端口一</option>
-            <option value="1">输入端口一</option>
-            <option value="1">输入端口一</option>
+            <option value="1">输入端口二</option>
+            <option value="1">输入端口三</option>
             <option value="0">缺省校正</option>
             <option value="-1">自适应校正</option>
           </select>
