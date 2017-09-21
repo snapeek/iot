@@ -227,18 +227,20 @@ export default {
     },
 
     create() {
-      let device = new Device(this.currentDevice)
-      this.devices.push(device)
-      return device.save() 
+      // let device = new Device(this.currentDevice)
+      this.$http.post("/devices", this.currentDevice).then((response) => {
+        console.log(response.data)
+        let device = response.data
+        this.devices.push(device)
+      })
+      // this.devices.push(device)
     },
 
     update() {
-      try {
-        let device = this.currentDevice.save()
-        window.dev = this.currentDevice
-      } catch(e) {
-        console.log(e)
-      }
+      this.$http.put("/devices/" + this.currentDevice._id, 
+        this.currentDevice).then((response) => {
+        console.log(response.data)
+      })
     },
 
     destroy(device, index) {

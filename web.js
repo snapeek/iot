@@ -22,6 +22,7 @@ const app = express()
 
 const Port = require("./client/models/port")
 const Device = require("./client/models/device")
+
 app.engine('html', ejs.renderFile)
 app.set("view engine", "html")
 app.set('views', __dirname + '/dist')
