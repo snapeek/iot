@@ -25,15 +25,16 @@
       <label class="label" v-if="type == 1">端口输出值</label>
       <p class="control has-addons" v-if="type == 1">
         <span class="select">
-          <select v-model="out_type">
+          <select v-model="input_port">
             <option value="0">输入端口一</option>
             <option value="1">输入端口二</option>
-            <option value="1">输入端口三</option>
-            <option value="0">缺省校正</option>
-            <option value="-1">自适应校正</option>
+            <option value="2">输入端口三</option>
+            <option value="3">输入端口四</option>
+            <option value="-1">缺省校正</option>
+            <option value="-2">自适应校正</option>
           </select>
         </span>
-        <input class="input is-expanded" type="text" placeholder="请输入公式" v-model="computer" v-if="out_type == 1">
+        <!-- <input class="input is-expanded" type="text" placeholder="请输入公式" v-model="computer" v-if="out_type >= 0"> -->
       </p>
       <label class="label">转换设置</label>
       <p class="control has-addons">
@@ -48,7 +49,7 @@
        <div class="control r is-horizontal">
         <div class="control is-grouped">
           <label class="checkbox">
-            <input type="checkbox" v-model="is_switch">
+            <input type="checkbox" v-model="is_switch" />
             启用端口
           </label>
           <button class="button is-primary" @click="save">保存</button>
@@ -77,12 +78,11 @@ export default {
     //  let devices = await Device.find({})
     return {
       device: null,
-      rate: 60,
       out_type: 0,
       computer: '',
       is_switch: false,
       // data: [300, 50, 100],
-      // devicesOut: [],
+      input_port: -1,
       // devicesIn: []
     }
   },
@@ -94,10 +94,11 @@ export default {
     save() {
       this.$http.put("/ports/" + this.pid, {
           pid: this.pid,
-          rate: this.rate,
           computer: this.computer,
           out_type: this.out_type,
+          is_switch: this.is_switch,
           device: this.device
+
       }).then((response) => {
         console.log(response)
       }).catch((error) => {
@@ -113,12 +114,11 @@ export default {
         return JSON.parse(data)
       }],
     }).then((response) => {
-      // console.log(response.data)
       let port = response.data
-      this.rate = port.rate
+      this.is_switch = port.is_switch
       this.computer = port.computer
       this.out_type = port.out_type
-      // this.devicesIn = response.data
+      this.device = port.device
     }).catch((error) => {
       console.log(error)
     })

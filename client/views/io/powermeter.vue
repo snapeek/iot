@@ -8,6 +8,21 @@
         <article class="tile is-child box">
           <h1 class="title">功率计设置</h1>
           <div class="block">
+            <label class="label">设备选择</label>
+            <p class="control">
+              <span class="select">
+                <select v-model="device">
+                  <option>请选择设备</option>
+                  <option v-for="device in devices" :value="device._id.toString()">{{ device.name }}</option>
+                </select>
+              </span>
+            </p>
+            <label class="label">设备 ID</label>
+            <p class="control">
+              <p class="control is-expanded">
+                <input class="input" type="text" placeholder="寄存器地址">
+              </p>
+            </p>
             <label class="label">协议类型</label>
             <p class="control">
               <div class="select is-fullwidth">
@@ -32,10 +47,10 @@
             <p class="control is-horizontal" v-show="type == 'rtu'">
               <div class="control is-grouped" v-show="type == 'rtu'">
                 <p class="control is-expanded">
-                  <input class="input" type="text" placeholder="串口号" >
+                  <input class="input" type="text" v-model="com" placeholder="串口号" >
                 </p>
                 <p class="control is-expanded">
-                  <input class="input" type="text" placeholder="设备 ID">
+                  <input class="input" type="text" v-model="path" placeholder="设备位置">
                 </p>
               </div>
             </p> 
@@ -45,7 +60,7 @@
                 <p class="control is-expanded">
                 <label class="label"  v-show="type == 'rtu'">波特率</label>
                 <span class="select">
-                  <select>
+                  <select v-model="baud">
                     <option value="115200">115200</option>
                     <option value="57600">57600</option>
                     <option value="38400">38400</option>
@@ -60,7 +75,7 @@
                 <p class="control is-expanded">
                 <label class="label"  v-show="type == 'rtu'">数据位</label>
                 <span class="select">
-                  <select>
+                  <select v-model="digit">
                     <option value="5">5</option>
                     <option value="6">6</option>
                     <option value="7">7</option>
@@ -75,37 +90,39 @@
                 <p class="control is-expanded">
                 <label class="label"  v-show="type == 'rtu'">奇偶校验</label>
                 <span class="select">
-                  <select>
-                    <option value="115200">115200</option>
-                    <option value="57600">57600</option>
-                    <option value="38400">38400</option>
-                    <option value="19200">19200</option>
-                    <option value="14400">14400</option>
-                    <option value="9600">9600</option>
-                    <option value="4800">4800</option>
-                    <option value="2400">2400</option>
+                  <select v-model="checksum">
+                    <option value="0">无</option>
+                    <option value="1">奇校验</option>
+                    <option value="2">偶校验</option>
                   </select>
                 </span>
                 </p>
                 <p class="control is-expanded">
                 <label class="label"  v-show="type == 'rtu'">停止位</label>
                 <span class="select">
-                  <select>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
+                  <select v-model="stop">
+                    <option value="1">1</option>
+                    <option value="1.5">1.5</option>
+                    <option value="2">2</option>
                   </select>
                 </span>
                 </p>
               </div>
             </p>
             <label class="label">寄存器地址</label>
-            <p class="control">
-              <p class="control is-expanded">
-                <input class="input" type="text" placeholder="寄存器地址">
-              </p>
-            </p>
+            <span class="select is-fullwidth">
+                <select v-model="register">
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                </select>
+              </span>
             <label class="label">数据类型</label>
             <span class="select is-fullwidth">
                 <select v-model="out_type">
@@ -167,7 +184,8 @@ export default {
       mask: '',
       host: '',
       out_type: '',
-      type: 'tcp'
+      type: 'tcp',
+      devices: []
     }
   },
 

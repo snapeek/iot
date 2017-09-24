@@ -121,9 +121,9 @@
                   <select 
                     v-bind:value="currentDevice.type" 
                     v-on:input="oninput('type', $event.target.value)" >
-                    <option value="1">输入</option>
-                    <option value="2">输出</option>
-                     <option value="3">功率计</option> 
+                    <option value="0">输入</option>
+                    <option value="1">输出</option>
+                     <option value="2">功率计</option> 
                   </select>
                 </div>
               </div>
@@ -246,8 +246,10 @@ export default {
     destroy(device, index) {
       if(confirm('确定删除吗?')) {
         try {
-          device.remove()
+        this.$http.delete('/devices?' + '').then((response) => {
+          let devices = response.data
           this.devices.splice(index, 1)
+        })
         } catch(e) {
           console.log(e)
         }

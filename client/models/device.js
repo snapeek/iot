@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 
 const device = new Schema({
   name: String,
-  type: Number,
+  type: Number, // 0 输入 1 输出 2 功率计
   socket_id: String,
   mb_protocol: String,
   baud: Number,

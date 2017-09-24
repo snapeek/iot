@@ -24,7 +24,6 @@ module.exports.use = function (app) {
     console.log(port)
     Port.update({port_id: port.pid}, {
       device: port.device,
-      rate: port.rate,
       out_type: port.out_type,
       // out_def: port.out_def,
       computer: port.computer,
@@ -61,6 +60,13 @@ module.exports.use = function (app) {
   app.put('/devices/:device_id', function (req, res) {
     let device = req.body
     Device.update({_id: req.params.device_id}, device, function(err, device) {
+      res.send(device)
+    })
+  })
+
+  app.delete('/devices/:device_id', function (req, res) {
+    let device = req.body
+    Device.remove({_id: req.params.device_id}, function(err, device) {
       res.send(device)
     })
   })

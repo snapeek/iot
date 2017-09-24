@@ -8,10 +8,10 @@
         <article class="tile is-child box">
           <h1 class="title">系统设置</h1>
           <div class="block">
-            <label class="label">mongodb 连接字符串</label>
+            <!-- <label class="label">mongodb 连接字符串</label>
             <p class="control">
               <input class="input" type="text" placeholder="mongodb://username:password@ip:port/db" v-model="mongoUrl">
-            </p>
+            </p> -->
             <label class="label">IP 地址</label>
             <p class="control has-icon has-icon-right">
               <input class="input" type="text" placeholder="127.0.0.1" v-model="host">
@@ -28,7 +28,7 @@
               </span> -->
               <!-- <span class="help is-success">This username is available</span> -->
             </p>
-            <label class="label">校正状态</label>
+             <!-- <label class="label">校正状态</label>
             <p class="control has-icon has-icon-right">
               <span class="select">
                 <select v-model="rate">
@@ -36,16 +36,18 @@
                   <option :value="2">自适应校正</option>
                 </select>
               </span>  
-            </p>
+            </p>  -->
             <label class="label">系统状态</label>
-            <p class="control has-icon has-icon-right">
-              <span class="select">
-                <select v-model="rate">
-                  <option :value="0">启动中</option>
-                  <option :value="1">暂停</option>
-                </select>
-              </span>  
-            </p>
+            <div class="control">
+            <label class="radio">
+              <input type="radio" name="status" :value="true" v-model="status">
+              启动中
+            </label>
+            <label class="radio">
+              <input type="radio" name="status" :value="false" v-model="status">
+              暂停
+            </label>
+          </div>
             <label class="label">读取间隔</label>
             <p class="control has-addons">
               <span class="select">
@@ -98,8 +100,10 @@ export default {
     //  let devices = await Device.find({})
     return {
       mongoUrl: '',
-      mask: '',
-      host: ''
+      mask: '255.255.255.0',
+      host: '127.0.0.1',
+      rate: 30,
+      status: false
     }
   },
 

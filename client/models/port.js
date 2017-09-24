@@ -4,9 +4,7 @@ const Schema = mongoose.Schema
 
 const port = new Schema({
   port_id: String,
-  device_out: String,
-  device_in: String,
-  rate: Number,
+  device: String,
   out_type: Number,
   out_def: Number,
   computer: String,
