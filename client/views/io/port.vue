@@ -26,10 +26,8 @@
       <p class="control has-addons" v-if="type == 1">
         <span class="select">
           <select v-model="input_port">
-            <option value="0">输入端口一</option>
-            <option value="1">输入端口二</option>
-            <option value="2">输入端口三</option>
-            <option value="3">输入端口四</option>
+
+            <option :value="inport.port_id" v-for="inport in inputPorts">{{inport.port_id}}</option>
             <option value="-1">缺省校正</option>
             <option value="-2">自适应校正</option>
           </select>
@@ -66,6 +64,10 @@ export default {
     // port
   },
   props: {
+    inputPorts: {
+      type: Array,
+      default() { return [] }
+    },
     devices: {
       type: Array,
       default() { return [] }
@@ -82,8 +84,7 @@ export default {
       computer: '',
       is_switch: false,
       // data: [300, 50, 100],
-      input_port: -1,
-      // devicesIn: []
+      input_port: -1
     }
   },
 
@@ -97,8 +98,8 @@ export default {
           computer: this.computer,
           out_type: this.out_type,
           is_switch: this.is_switch,
-          device: this.device
-
+          device: this.device,
+          input_port: this.input_port
       }).then((response) => {
         console.log(response)
       }).catch((error) => {
@@ -119,6 +120,9 @@ export default {
       this.computer = port.computer
       this.out_type = port.out_type
       this.device = port.device
+      if(this.type == 1) {
+        this.input_port = port.input_port
+      }
     }).catch((error) => {
       console.log(error)
     })

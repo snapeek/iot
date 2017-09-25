@@ -12,7 +12,8 @@ const device = new Schema({
   data: Number,
   data_parity: Number,
   ip: String,
-  port: String
+  port: String,
+  computer: String
 })
 
 module.exports = mongoose.model('devices', device)

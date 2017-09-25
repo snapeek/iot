@@ -85,31 +85,19 @@ const uri = 'http://localhost:' + port
 
 mongoose.Promise = global.Promise
 
-module.exports = app.listen(port, '0.0.0.0', err => {
-  if (err) {
-    console.log(err)
-    return
+mongoose.connect('mongodb://iot:iot123@101.201.37.28:3717/iot', {
+  useMongoClient: true,
+}).then(
+  () => { 
+    app.listen(port, '0.0.0.0', err => {
+      if (err) {
+        console.log(err)
+        return
+      }
+    })
+
+  },
+  err => {
+
   }
-  mongoose.connect('mongodb://iot:iot123@101.201.37.28:3717/iot', {
-    useMongoClient: true,
-  }).then(
-    () => { 
-      // Port.find({}, function(err, ports) {
-      //   console.log(ports)
-      //   // for(let port of ports) {
-      //     // let mb = new Modbus(port)
-      //     // mb.read() 
-      //   // }
-      // }) 
-
-    },
-    err => {
-  
-    }
-  )
-
-  // when env is testing, don't need open it
-  // if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
-  //   opn(uri)
-  // }
-})
+)

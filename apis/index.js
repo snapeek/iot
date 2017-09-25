@@ -1,6 +1,7 @@
 const Port = require("../client/models/port")
 const Device = require("../client/models/device")
 // const Data = require("../client/models/data")
+const Power = require("../client/models/power")
 
 module.exports.use = function (app) {
 
@@ -10,6 +11,20 @@ module.exports.use = function (app) {
 
   app.get('config', function(req, res) {
 
+  })
+
+  app.get('/ports', function(req, res) {
+    let query = {}
+    if(req.query.type != undefined && req.query.type.length > 0 ) {
+      query.port_id = new RegExp(req.query.type)
+    }    
+    if(req.query.is_switch === true || req.query.is_switch === "true") {
+      query.is_switch = true
+    }
+    console.log(query)
+    Port.find(query, function(err, ports) {
+      res.send(ports)
+    })
   })
 
   // app.use(bodyParser.urlencoded({ extended: false }))
@@ -28,6 +43,7 @@ module.exports.use = function (app) {
       // out_def: port.out_def,
       computer: port.computer,
       is_switch: port.is_switch,
+      input_port: port.input_port
     }, function(err, rport) {
       console.log(err,rport)
       res.send(rport)
@@ -51,23 +67,41 @@ module.exports.use = function (app) {
   })
 
   app.post('/devices', function (req, res) {
-    let device = req.body
-    Device.create(device, function(err, device) {
+    Device.create(req.body, function(err, device) {
       res.send(device)
     })
   })
 
   app.put('/devices/:device_id', function (req, res) {
-    let device = req.body
-    Device.update({_id: req.params.device_id}, device, function(err, device) {
+    Device.update({_id: req.params.device_id}, req.body, function(err, device) {
       res.send(device)
     })
   })
 
   app.delete('/devices/:device_id', function (req, res) {
-    let device = req.body
+    // let device = req.body
     Device.remove({_id: req.params.device_id}, function(err, device) {
       res.send(device)
+    })
+  })
+
+  app.put('/powermeter/:name', function (req, res) {
+    Power.update({name: req.params.name}, req.body, function(err, power) {
+      console.log(power)
+      res.send(power.data)
+    })
+  })
+
+  app.get('/powermeter', function (req, res) {
+    Power.findOne({}, function(err, power) {
+      console.log(power)
+      res.send(power)
+    })
+  })
+
+  app.get('/statics', function(req, res) {
+    Data.find({}, function(err, data) {
+
     })
   })
 

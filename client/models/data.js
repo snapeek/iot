@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
@@ -10,4 +10,4 @@ const data = new Schema({
   port_id: String
 })
 
-export default mongoose.model('datas', data)
+module.exports = mongoose.model('datas', data)

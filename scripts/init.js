@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Port = require("../client/models/port")
+const Power = require("../client/models/power")
 mongoose.Promise = global.Promise
 
 mongoose.connect('mongodb://iot:iot123@101.201.37.28:3717/iot', {
@@ -19,6 +20,8 @@ mongoose.connect('mongodb://iot:iot123@101.201.37.28:3717/iot', {
     Port.findOneAndUpdate({port_id: 'port_out_2'}, {port_id: 'port_out_2'}, { upsert: true}, cb) 
     Port.findOneAndUpdate({port_id: 'port_out_3'}, {port_id: 'port_out_3'}, { upsert: true}, cb) 
 
+    Power.findOneAndUpdate({name: 'power_01'}, {name: 'power_01'}, { upsert: true}, cb) 
+    
   },
   err => {
 

@@ -11,7 +11,7 @@
             <label class="label">设备选择</label>
             <p class="control">
               <span class="select">
-                <select v-model="device">
+                <select v-model="device_id">
                   <option>请选择设备</option>
                   <option v-for="device in devices" :value="device._id.toString()">{{ device.name }}</option>
                 </select>
@@ -20,13 +20,13 @@
             <label class="label">设备 ID</label>
             <p class="control">
               <p class="control is-expanded">
-                <input class="input" type="text" placeholder="寄存器地址">
+                <input class="input" type="text" placeholder="寄存器地址" v-model="power_id">
               </p>
             </p>
             <label class="label">协议类型</label>
             <p class="control">
               <div class="select is-fullwidth">
-                <select v-model="type">
+                <select v-model="protocol">
                   <option value="tcp">modbusTCP</option>
                   <option value="rtu">modbusRTU</option>
                 </select>
@@ -34,18 +34,18 @@
             </p>
             <p class="control"></p>
             <label class="label">连接设置</label>
-            <p class="control is-horizontal" v-if="type == 'tcp'">
-              <div class="control is-grouped" v-if="type == 'tcp'">
+            <p class="control is-horizontal" v-if="protocol == 'tcp'">
+              <div class="control is-grouped" v-if="protocol == 'tcp'">
                 <p class="control is-expanded">
-                  <input class="input" type="text" placeholder="IP"/>
+                  <input class="input" type="text" placeholder="IP" v-model="ip"/>
                 </p>
                 <p class="control is-expanded">
-                  <input class="input" type="text" placeholder="端口号"/>
+                  <input class="input" type="text" placeholder="端口号" v-model="port"/>
                 </p>
               </div>
             </p>
-            <p class="control is-horizontal" v-show="type == 'rtu'">
-              <div class="control is-grouped" v-show="type == 'rtu'">
+            <p class="control is-horizontal" v-show="protocol == 'rtu'">
+              <div class="control is-grouped" v-show="protocol == 'rtu'">
                 <p class="control is-expanded">
                   <input class="input" type="text" v-model="com" placeholder="串口号" >
                 </p>
@@ -55,10 +55,10 @@
               </div>
             </p> 
             
-            <p class="control" v-show="type == 'rtu'">
-              <div class="control is-grouped" v-show="type == 'rtu'">
+            <p class="control" v-show="protocol == 'rtu'">
+              <div class="control is-grouped" v-show="protocol == 'rtu'">
                 <p class="control is-expanded">
-                <label class="label"  v-show="type == 'rtu'">波特率</label>
+                <label class="label"  v-show="protocol == 'rtu'">波特率</label>
                 <span class="select">
                   <select v-model="baud">
                     <option value="115200">115200</option>
@@ -73,7 +73,7 @@
                 </span>
                 </p>
                 <p class="control is-expanded">
-                <label class="label"  v-show="type == 'rtu'">数据位</label>
+                <label class="label"  v-show="protocol == 'rtu'">数据位</label>
                 <span class="select">
                   <select v-model="digit">
                     <option value="5">5</option>
@@ -85,10 +85,10 @@
                 </p>
               </div>
             </p>
-            <p class="control" v-show="type == 'rtu'">
-              <div class="control is-grouped" v-show="type == 'rtu'">
+            <p class="control" v-show="protocol == 'rtu'">
+              <div class="control is-grouped" v-show="protocol == 'rtu'">
                 <p class="control is-expanded">
-                <label class="label"  v-show="type == 'rtu'">奇偶校验</label>
+                <label class="label"  v-show="protocol == 'rtu'">奇偶校验</label>
                 <span class="select">
                   <select v-model="checksum">
                     <option value="0">无</option>
@@ -98,7 +98,7 @@
                 </span>
                 </p>
                 <p class="control is-expanded">
-                <label class="label"  v-show="type == 'rtu'">停止位</label>
+                <label class="label"  v-show="protocol == 'rtu'">停止位</label>
                 <span class="select">
                   <select v-model="stop">
                     <option value="1">1</option>
@@ -125,7 +125,7 @@
               </span>
             <label class="label">数据类型</label>
             <span class="select is-fullwidth">
-                <select v-model="out_type">
+                <select v-model="digitype">
                   <option value="0">long</option>
                   <option value="1">float</option>
                 </select>
@@ -180,25 +180,81 @@ export default {
   data () {
     //  let devices = await Device.find({})
     return {
-      mongoUrl: '',
-      mask: '',
-      host: '',
-      out_type: '',
-      type: 'tcp',
+      name: '',
+      device_id: '',
+      power_id: '',
+      protocol: 'tcp',
+      ip: '',
+      port: '',
+      com: '',
+      path: '',
+      baud: '',
+      digit: 0,
+      checksum: '',
+      stop: false,
+      register: 0,
+      digitype: 0,
+      out_type: 0,
       devices: []
     }
   },
 
   mounted () {
+      this.$http.get("/powermeter/").then((response) => {
+        let power = response.data
+        this.name = power.name
+        this.device_id = power.device_id
+        this.power_id = power.power_id
+        this.protocol = power.protocol || "tcp"
+        this.ip = power.ip || "127.0.0.1"
+        this.port = power.port
+        this.com = power.com
+        this.path = power.path
+        this.baud = power.baud
+        this.digit = power.digit
+        this.checksum = power.checksum
+        this.stop = power.stop
+        this.register = power.register || 0
+        this.digitype = power.digitype || 0
+        this.out_type = power.out_type || 0
+      }).catch((error) => {
+        console.log(error)
+      })   
+  
   },
 
   methods: {
     submit () {
-      openNotification({
-        message: '保存成功！',
-        type: 'success',
-        duration: 0
-      })
+      this.$http.put("/powermeter/" + this.name, {
+        device_id: this.device_id,
+        power_id: this.power_id,
+        protocol: this.protocol,
+        ip: this.ip,
+        com: this.com,
+        path: this.path,
+        baud: this.baud,
+        digit: this.digit,
+        checksum: this.checksum,
+        port: this.port,
+        stop: this.stop,
+        register: this.register,
+        digitype: this.digitype,
+        out_type: this.out_type
+      }).then((response) => {
+        console.log(response)
+        openNotification({
+          message: '保存成功！',
+          type: 'success',
+          duration: 2000
+        })
+      }).catch((error) => {
+        openNotification({
+          message: '保存失败' + error,
+          type: 'error',
+          duration: 200
+        })
+      })      
+
     }
   }
 
