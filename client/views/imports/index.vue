@@ -40,8 +40,9 @@
             </div>
             <div class="column">
               <span class="r">
-              <button class="button is-primary" @click="open">导出数据</button>
-              <button class="button is-primary" @click="open">导入数据</button>
+              <button class="button is-primary" @click="exportfile">导出数据</button>
+              <input id="file-input" type="file" name="resume" style="display:none">
+              <button class="button is-primary" @click="importfile">导入数据</button>
               </span>
             </div>
           </div>
@@ -49,28 +50,21 @@
             <thead>
               <tr>
                 <th>记录开始时间</th>
-                <th>记录停止时间</th>
-                <th>输入端口 1</th>
-                <th>功率计</th>
-                <th>输出端口 1</th>
-                <th>输出端口 3</th>
+                <th v-for="port in ports">{{port}}</th>
                 <th colspan="3"></th>
               </tr>
             </thead>
             <tfoot>
               <tr>
                 <th>记录开始时间</th>
-                <th>记录停止时间</th>
-                <th>输入端口 1</th>
-                <th>功率计</th>
-                <th>输出端口 1</th>
-                <th>输出端口 3</th>
+                <th v-for="port in ports">{{port}}</th>
                 <th colspan="3"></th>
               </tr>
             </tfoot>
             <tbody>
-              <tr v-for="(device, index) in devices">
-                <td>{{index + 1}}</td>
+              <tr v-for="(vals, k) in rows">
+                <td>{{ k }}</td>
+                <td v-for="val in vals">{{ val }}</td>
               </tr>          
             </tbody>
           </table>
@@ -88,7 +82,10 @@ export default {
 
   data () {
     return {
-      devices:[]
+      ports: [],
+      // data: [300, 50, 100],
+      // devicesOut: [],
+      rows: {}
     }
   },
 
@@ -103,12 +100,24 @@ export default {
     activeTab(type) {
       return this.type == type ? 'is-disabled' : ''
     },
-    open() {
+    importfile() {
+      document.getElementById('file-input').click()
+    },
+    exportfile() {
 
     }
   },
 
   mounted () {
+    this.$http({
+      url: "/inout",
+    }).then((response) => {
+      this.ports = response.data.ports
+      this.rows = response.data.rows
+      console.log(response.data)
+    }).catch((error) => {
+      console.log(error)
+    })
   }
 }
 </script>

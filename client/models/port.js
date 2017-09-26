@@ -20,19 +20,23 @@ function compute(val, computer) {
 port.methods = {
   async getval(val, port_id) {
     // let index = parInt(this.port_id.split('_')[2])
-    let fixedVal
+    let fixedVal, computer
     if(this.out_type == 0) {
       let device = await Device.find({_id: this.device})
-      fixedVal = compute(val ,device.computer)
+      computer = device.computer
+      fixedVal = compute(val, computer)
     } else if(this.out_type == 1) {
-      fixedVal = compute(val ,this.computer)
+      computer = this.computer
+      fixedVal = compute(val, computer)
     } else {
       fixedVal = val
     }
     return {
+      origin: val,
       val: fixedVal,
+      fixed: fixedVal,
       out_type: this.out_type,
-      computer: this.computer,
+      computer: computer,
       device_id: this.device,
       port_id: this.port_id,
       input_port: this.input_port
