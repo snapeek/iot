@@ -200,26 +200,37 @@ export default {
   },
 
   mounted () {
-      this.$http.get("/powermeter/").then((response) => {
-        let power = response.data
-        this.name = power.name
-        this.device_id = power.device_id
-        this.power_id = power.power_id
-        this.protocol = power.protocol || "tcp"
-        this.ip = power.ip || "127.0.0.1"
-        this.port = power.port
-        this.com = power.com
-        this.path = power.path
-        this.baud = power.baud
-        this.digit = power.digit
-        this.checksum = power.checksum
-        this.stop = power.stop
-        this.register = power.register || 0
-        this.digitype = power.digitype || 0
-        this.out_type = power.out_type || 0
-      }).catch((error) => {
-        console.log(error)
-      })   
+    this.$http({
+      url: "/devices?type=2",
+      transformResponse: [(data) => {
+        return JSON.parse(data)
+      }],
+    }).then((response) => {
+      console.log(response.data)
+      this.devices = response.data
+    }).catch((error) => {
+      console.log(error)
+    })    
+    this.$http.get("/powermeter/").then((response) => {
+      let power = response.data
+      this.name = power.name
+      this.device_id = power.device_id
+      this.power_id = power.power_id
+      this.protocol = power.protocol || "tcp"
+      this.ip = power.ip || "127.0.0.1"
+      this.port = power.port
+      this.com = power.com
+      this.path = power.path
+      this.baud = power.baud
+      this.digit = power.digit
+      this.checksum = power.checksum
+      this.stop = power.stop
+      this.register = power.register || 0
+      this.digitype = power.digitype || 0
+      this.out_type = power.out_type || 0
+    }).catch((error) => {
+      console.log(error)
+    })   
   
   },
 

@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const _ = require("lodash")
 mongoose.Promise = global.Promise
 var modbus = require('modbus')
-
+// var searchAngle = require('./lib/search_angle')
 function initModbus() {
   let mb = modbus.create()
   let ctxin = mb.createMaster({
@@ -52,6 +52,7 @@ async function getInput(ctxin, ports) {
     await Promise.all(ports.map(async (port)=>{
       let index = parseInt(port.port_id.split('_')[2])
       let val = regs[index]
+      // searchAngle.optAngle(x, y, z)
       return vals[port.port_id] = await port.getval(val, port.port_id)
     }))
   } catch(err) {
