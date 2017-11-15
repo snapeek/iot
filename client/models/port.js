@@ -6,11 +6,14 @@ const Schema = mongoose.Schema
 const port = new Schema({
   port_id: String,
   device: String,
-  out_type: Number,
+  out_type_speed: Number,
+  out_type_direct: Number,
   out_def: Number,
-  computer: String,
+  speed_computer: String,
+  direct_computer: String,
   is_switch: Boolean,
-  input_port: String
+  speed_port: String,
+  direct_port: String
 })
 
 function compute(val, computer) {
@@ -35,11 +38,14 @@ port.methods = {
       origin: val,
       val: fixedVal,
       fixed: fixedVal,
-      out_type: this.out_type,
-      computer: computer,
+      out_type_speed: this.out_type_speed,
+      out_type_direct: this.out_type_direct,
+      direct_computer: this.direct_computer,
+      speed_computer: this.speed_computer,
       device_id: this.device,
       port_id: this.port_id,
-      input_port: this.input_port
+      speed_port: this.speed_port,
+      direct_port: this.direct_port
     }
   }
 }

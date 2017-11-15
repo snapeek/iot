@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import port from './port'
+import port from './port_input'
 // import Device from '@/../models/device'
 
 export default {

@@ -39,11 +39,14 @@ module.exports.use = function (app) {
     console.log(port)
     Port.update({port_id: port.pid}, {
       device: port.device,
-      out_type: port.out_type,
+      out_type_speed: port.out_type_speed,
+      out_type_direct: port.out_type_direct,
       // out_def: port.out_def,
-      computer: port.computer,
+      direct_computer: port.direct_computer,
+      speed_computer: port.speed_computer,
       is_switch: port.is_switch,
-      input_port: port.input_port
+      speed_port: port.speed_port,
+      direct_port: port.direct_port
     }, function(err, rport) {
       console.log(err,rport)
       res.send(rport)
